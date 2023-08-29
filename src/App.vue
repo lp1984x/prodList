@@ -18,10 +18,12 @@ const addProd = () => {
 }
 const doCheck = (prod, type)=> {
       if (type === "need") {
-        const delMask = prodList.value.splice(prod, 1);
+        const delMask = prodList.value.filter((p) => p === prod)
+        prodList.value = prodList.value.filter((p) => p !== prod)
         delList.value.push(...delMask);
       } else {
-        const noDelMask = delList.value.splice(prod, 1);
+        const noDelMask = delList.value.filter((p) => p === prod);
+        delList.value = delList.value.filter((p) => p !== prod)
         prodList.value.push(...noDelMask);
       }
     }
@@ -72,7 +74,7 @@ onMounted(() => {
               <span>Product List</span>
             </h2>
             <ul class="prod-list">
-              
+
               <li
                 v-for="prod in prodList"
                 :key="prod.createdAt"
@@ -90,10 +92,10 @@ onMounted(() => {
                   :key="prod.createdAt"
                   >
                   <div>
-                    <input type="checkbox" v-on:change="doCheck(prod, 'complete')" checked>
+                    <input type="checkbox" @change="doCheck(prod, 'complete')" checked>
                     <span>{{ prod.content }}</span>
                  </div>
-                  <button class="btn-remove" v-on:click="removeDel(prod, 'complete')">Remove</button>
+                  <button class="btn-remove" @click="removeDel(prod, 'complete')">Remove</button>
                 </li>
               </ul>
 
